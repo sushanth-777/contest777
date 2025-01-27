@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 
 app.use(cors());
 app.use(express.json());
@@ -9,6 +9,9 @@ app.use(express.json());
 // Load questions from JSON file
 const questions = require('./questions.json');
 
+app.get('/', (req, res) => {
+  res.send("Backend is Running");
+})
 // API endpoint to fetch questions based on set
 app.get('/api/questions', (req, res) => {
   const set = req.query.set;
