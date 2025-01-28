@@ -6,6 +6,11 @@ function ContestPage() {
   const location = useLocation();
   const { contest, selectedTime } = location.state; // Retrieve state passed via navigate
   const [timeLeft, setTimeLeft] = useState(selectedTime * 60); // Initialize timer
+  const [questions, setQuestions] = useState({
+    easy: contest.easy.map((q) => ({ ...q, completed: false })),
+    medium: contest.medium.map((q) => ({ ...q, completed: false })),
+    hard: contest.hard.map((q) => ({ ...q, completed: false })),
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -27,49 +32,85 @@ function ContestPage() {
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
+  const handleCheckboxChange = (difficulty, id) => {
+    setQuestions((prevQuestions) => ({
+      ...prevQuestions,
+      [difficulty]: prevQuestions[difficulty].map((q) =>
+        q.id === id ? { ...q, completed: !q.completed } : q
+      ),
+    }));
+  };
+
   return (
     <div className="App">
       <h1 className="text-3xl font-bold mb-6 text-blue-600">Contest Questions</h1>
 
       <div className="card">
         <div className="space-y-4">
-          {contest.easy.map((q) => (
-            <div key={q.id} className="question-card easy">
+          {questions.easy.map((q) => (
+            <div
+              key={q.id}
+              className={`question-card easy ${q.completed ? 'completed' : ''}`}
+            >
               <span>{q.title}</span>
-              <a
-                href={q.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="problem-link"
-              >
-                Solve Problem
-              </a>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => window.open(q.link, '_blank')} // Open link in new tab
+                  className="solve-button"
+                >
+                  Solve
+                </button>
+                <input
+                  type="checkbox"
+                  checked={q.completed}
+                  onChange={() => handleCheckboxChange('easy', q.id)}
+                  className="checkbox"
+                />
+              </div>
             </div>
           ))}
-          {contest.medium.map((q) => (
-            <div key={q.id} className="question-card medium">
+          {questions.medium.map((q) => (
+            <div
+              key={q.id}
+              className={`question-card medium ${q.completed ? 'completed' : ''}`}
+            >
               <span>{q.title}</span>
-              <a
-                href={q.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="problem-link"
-              >
-                Solve Problem
-              </a>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => window.open(q.link, '_blank')} // Open link in new tab
+                  className="solve-button"
+                >
+                  Solve
+                </button>
+                <input
+                  type="checkbox"
+                  checked={q.completed}
+                  onChange={() => handleCheckboxChange('medium', q.id)}
+                  className="checkbox"
+                />
+              </div>
             </div>
           ))}
-          {contest.hard.map((q) => (
-            <div key={q.id} className="question-card hard">
+          {questions.hard.map((q) => (
+            <div
+              key={q.id}
+              className={`question-card hard ${q.completed ? 'completed' : ''}`}
+            >
               <span>{q.title}</span>
-              <a
-                href={q.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="problem-link"
-              >
-                Solve Problem
-              </a>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => window.open(q.link, '_blank')} // Open link in new tab
+                  className="solve-button"
+                >
+                  Solve
+                </button>
+                <input
+                  type="checkbox"
+                  checked={q.completed}
+                  onChange={() => handleCheckboxChange('hard', q.id)}
+                  className="checkbox"
+                />
+              </div>
             </div>
           ))}
         </div>

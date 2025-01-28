@@ -59,16 +59,19 @@
 .easy {
   background-color: #dcfce7; /* Light green */
   color: #16a34a; /* Green text */
+  font-weight: bold; /* Bold text */
 }
 
 .medium {
   background-color: #fef9c3; /* Light yellow */
   color: #ca8a04; /* Yellow text */
+  font-weight: bold; /* Bold text */
 }
 
 .hard {
   background-color: #fee2e2; /* Light red */
   color: #dc2626; /* Red text */
+  font-weight: bold; /* Bold text */
 }
 
 /* Link styling */
@@ -77,6 +80,7 @@
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
+  margin-right: 16px; /* Add spacing between link and checkbox */
 }
 
 .problem-link:hover {
@@ -92,3 +96,36 @@
   color: #1e293b; /* Dark gray */
   margin-top: 16px;
 }
+
+/* App.css */
+.question-card.completed {
+  background-color: #e5e7eb; /* Gray background for completed questions */
+  color: #6b7280; /* Gray text for completed questions */
+}
+
+.checkbox {
+  cursor: pointer;
+  width: 16px; /* Make checkbox larger */
+  height: 16px; /* Make checkbox larger */
+  margin-left: 8px; /* Add spacing between link and checkbox */
+}
+
+/* App.css */
+.solve-button {
+  background-color: #3b82f6; /* Blue */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 8px; /* Add spacing between button and checkbox */
+}
+
+.solve-button:hover {
+  background-color: #2563eb; /* Darker blue */
+}
+
+
