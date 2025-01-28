@@ -92,3 +92,13 @@
   color: #1e293b; /* Dark gray */
   margin-top: 16px;
 }
+
+.question-card.completed {
+  background-color: #f0f0f0; /* Light gray for completed */
+  border-color: #dcdcdc; /* Lighter border for completed */
+}
+
+.question-card input[type="checkbox"]:checked {
+  background-color: #3b82f6; /* Blue background when checked */
+  border-color: #3b82f6;
+}

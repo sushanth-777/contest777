@@ -28,7 +28,7 @@ function Home() {
 
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold mb-6 text-blue-600">Coding Contest Generator</h1>
+      <h1 className="text-3xl font-bold mb-6 text-blue-600">Contest777</h1>
 
       <div className="card">
         <div className="mb-4">
