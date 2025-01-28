@@ -129,3 +129,22 @@
 }
 
 
+.question-title {
+  flex-grow: 1;
+  margin-right: 16px;
+}
+
+.question-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.time-taken {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563; /* Gray-600 */
+  background-color: #e5e7eb; /* Gray-200 */
+  padding: 4px 8px;
+  border-radius: 4px;
+}

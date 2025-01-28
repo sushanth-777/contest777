@@ -4,12 +4,12 @@ import './App.css';
 
 function ContestPage() {
   const location = useLocation();
-  const { contest, selectedTime } = location.state; // Retrieve state passed via navigate
-  const [timeLeft, setTimeLeft] = useState(selectedTime * 60); // Initialize timer
+  const { contest, selectedTime } = location.state;
+  const [timeLeft, setTimeLeft] = useState(selectedTime * 60);
   const [questions, setQuestions] = useState({
-    easy: contest.easy.map((q) => ({ ...q, completed: false })),
-    medium: contest.medium.map((q) => ({ ...q, completed: false })),
-    hard: contest.hard.map((q) => ({ ...q, completed: false })),
+    easy: contest.easy.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
+    medium: contest.medium.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
+    hard: contest.hard.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
   });
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function ContestPage() {
       });
     }, 1000);
 
-    return () => clearInterval(timer); // Clean up on unmount
+    return () => clearInterval(timer);
   }, []);
 
   const formatTime = (seconds) => {
@@ -32,14 +32,63 @@ function ContestPage() {
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
+  const handleSolveClick = (difficulty, id) => {
+    setQuestions((prevQuestions) => ({
+      ...prevQuestions,
+      [difficulty]: prevQuestions[difficulty].map((q) =>
+        q.id === id
+          ? { ...q, startTime: q.startTime === null ? selectedTime * 60 - timeLeft : q.startTime }
+          : q
+      ),
+    }));
+  };
+
   const handleCheckboxChange = (difficulty, id) => {
     setQuestions((prevQuestions) => ({
       ...prevQuestions,
       [difficulty]: prevQuestions[difficulty].map((q) =>
-        q.id === id ? { ...q, completed: !q.completed } : q
+        q.id === id
+          ? {
+              ...q,
+              completed: !q.completed,
+              timeTaken: q.completed ? null : (selectedTime * 60 - timeLeft) - q.startTime,
+              startTime: q.completed ? null : q.startTime,
+            }
+          : q
       ),
     }));
   };
+
+  const renderQuestion = (q, difficulty) => (
+    <div
+      key={q.id}
+      className={`question-card ${difficulty} ${q.completed ? 'completed' : ''}`}
+    >
+      <span className="question-title">{q.title}</span>
+      <div className="question-actions">
+        <button
+          onClick={() => {
+            handleSolveClick(difficulty, q.id);
+            window.open(q.link, '_blank');
+          }}
+          className="solve-button"
+        >
+          Solve
+        </button>
+        <input
+          type="checkbox"
+          checked={q.completed}
+          onChange={() => handleCheckboxChange(difficulty, q.id)}
+          className="checkbox"
+        />
+        {q.completed && (
+          <span className="time-taken">
+            Time: {formatTime(q.timeTaken)}
+          </span>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div className="App">
@@ -47,72 +96,9 @@ function ContestPage() {
 
       <div className="card">
         <div className="space-y-4">
-          {questions.easy.map((q) => (
-            <div
-              key={q.id}
-              className={`question-card easy ${q.completed ? 'completed' : ''}`}
-            >
-              <span>{q.title}</span>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => window.open(q.link, '_blank')} // Open link in new tab
-                  className="solve-button"
-                >
-                  Solve
-                </button>
-                <input
-                  type="checkbox"
-                  checked={q.completed}
-                  onChange={() => handleCheckboxChange('easy', q.id)}
-                  className="checkbox"
-                />
-              </div>
-            </div>
-          ))}
-          {questions.medium.map((q) => (
-            <div
-              key={q.id}
-              className={`question-card medium ${q.completed ? 'completed' : ''}`}
-            >
-              <span>{q.title}</span>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => window.open(q.link, '_blank')} // Open link in new tab
-                  className="solve-button"
-                >
-                  Solve
-                </button>
-                <input
-                  type="checkbox"
-                  checked={q.completed}
-                  onChange={() => handleCheckboxChange('medium', q.id)}
-                  className="checkbox"
-                />
-              </div>
-            </div>
-          ))}
-          {questions.hard.map((q) => (
-            <div
-              key={q.id}
-              className={`question-card hard ${q.completed ? 'completed' : ''}`}
-            >
-              <span>{q.title}</span>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => window.open(q.link, '_blank')} // Open link in new tab
-                  className="solve-button"
-                >
-                  Solve
-                </button>
-                <input
-                  type="checkbox"
-                  checked={q.completed}
-                  onChange={() => handleCheckboxChange('hard', q.id)}
-                  className="checkbox"
-                />
-              </div>
-            </div>
-          ))}
+          {questions.easy.map((q) => renderQuestion(q, 'easy'))}
+          {questions.medium.map((q) => renderQuestion(q, 'medium'))}
+          {questions.hard.map((q) => renderQuestion(q, 'hard'))}
         </div>
 
         <div className="mt-6">
