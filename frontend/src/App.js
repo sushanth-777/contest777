@@ -1,45 +1,29 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ContestPage from './ContestPage'; // Import the ContestPage component
 import './App.css';
 
-function App() {
+function Home() {
   const [set, setSet] = useState('set_75');
-  const [contest, setContest] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(0); // Timer starts at 0
   const [selectedTime, setSelectedTime] = useState(90); // Default: 90 minutes
+  const navigate = useNavigate();
 
   const handleGenerateContest = async () => {
     try {
       const response = await axios.post('http://localhost:5001/api/generate-contest', { set });
-      setContest(response.data);
-      setTimeLeft(0); // Reset timer to 0
+      const contestData = response.data;
+
+      // Navigate to the contest page with the generated data and timer
+      navigate('/contest', {
+        state: {
+          contest: contestData,
+          selectedTime,
+        },
+      });
     } catch (error) {
       console.error('Error generating contest:', error);
     }
-  };
-
-  const startTimer = () => {
-    setTimeLeft(selectedTime * 60); // Convert minutes to seconds
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 0) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
-  };
-
-  const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  };
-
-  const handleTimeChange = (e) => {
-    setSelectedTime(parseInt(e.target.value)); // Update selected time
   };
 
   return (
@@ -64,7 +48,7 @@ function App() {
           <label className="block text-sm font-medium text-gray-700">Select Timer</label>
           <select
             value={selectedTime}
-            onChange={handleTimeChange}
+            onChange={(e) => setSelectedTime(parseInt(e.target.value))}
             className="select-dropdown"
           >
             <option value={90}>90 Minutes</option>
@@ -80,66 +64,18 @@ function App() {
           Generate Contest
         </button>
       </div>
-
-      {contest && (
-        <div className="card">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800">Contest Questions</h2>
-          <div className="space-y-4">
-            {contest.easy.map((q) => (
-              <div key={q.id} className="question-card easy">
-                <span>{q.title}</span>
-                <a
-                  href={q.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="problem-link"
-                >
-                  Solve Problem
-                </a>
-              </div>
-            ))}
-            {contest.medium.map((q) => (
-              <div key={q.id} className="question-card medium">
-                <span>{q.title}</span>
-                <a
-                  href={q.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="problem-link"
-                >
-                  Solve Problem
-                </a>
-              </div>
-            ))}
-            {contest.hard.map((q) => (
-              <div key={q.id} className="question-card hard">
-                <span>{q.title}</span>
-                <a
-                  href={q.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="problem-link"
-                >
-                  Solve Problem
-                </a>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6">
-            <button
-              onClick={startTimer}
-              className="generate-button"
-            >
-              Start Timer
-            </button>
-            <h3 className="timer">
-              Time Left: {formatTime(timeLeft)}
-            </h3>
-          </div>
-        </div>
-      )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/contest" element={<ContestPage />} />
+      </Routes>
+    </Router>
   );
 }
 
