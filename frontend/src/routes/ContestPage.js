@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import './App.css';
+import { useLocation, useNavigate } from 'react-router-dom';
+import '../App.css';
 
 function ContestPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { contest, selectedTime } = location.state;
   const [timeLeft, setTimeLeft] = useState(selectedTime * 60);
   const [questions, setQuestions] = useState({
@@ -59,6 +60,10 @@ function ContestPage() {
     }));
   };
 
+  const handleSubmit = () => {
+    navigate('/insights', { state: { questions, selectedTime, timeLeft } });
+  };
+
   const renderQuestion = (q, difficulty) => (
     <div
       key={q.id}
@@ -90,7 +95,7 @@ function ContestPage() {
 
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold mb-6 text-blue-600">Contest Questions</h1>
+      <h1 className="text-3xl font-bold mb-6 text-green-600">Contest Questions</h1>
 
       <div className="card">
         <div className="space-y-4">
@@ -104,6 +109,13 @@ function ContestPage() {
             Time Left: {formatTime(timeLeft)}
           </h3>
         </div>
+
+        <button
+          onClick={handleSubmit}
+          className="submit-button mt-4"
+        >
+          Submit
+        </button>
       </div>
     </div>
   );
