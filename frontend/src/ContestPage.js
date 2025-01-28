@@ -82,9 +82,7 @@ function ContestPage() {
           className="checkbox"
         />
         {q.completed && (
-          <span className="time-taken">
-            Time: {formatTime(q.timeTaken)}
-          </span>
+          <span className="time-taken">{formatTime(q.timeTaken)}</span>
         )}
       </div>
     </div>

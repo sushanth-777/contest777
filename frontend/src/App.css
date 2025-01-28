@@ -141,10 +141,20 @@
 }
 
 .time-taken {
-  font-size: 14px;
-  font-weight: 500;
-  color: #4b5563; /* Gray-600 */
-  background-color: #e5e7eb; /* Gray-200 */
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff; /* White text for contrast */
+  background-color: #ff0066; /* Warm orange background */
+  padding: 6px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  display: inline-block;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
+
+.time-taken:hover {
+  background-color: #4ad219; /* Slightly darker blue on hover */
+  transform: scale(1.05); /* Subtle zoom effect on hover */
+}
+
