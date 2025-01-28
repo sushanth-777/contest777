@@ -28,12 +28,12 @@ app.post('/api/generate-contest', (req, res) => {
     return res.status(404).json({ error: 'Question set not found' });
   }
 
-  const contest = {
-    easy: getRandomQuestions(questions[set].easy, 1),
-    medium: getRandomQuestions(questions[set].medium, 2),
-    hard: getRandomQuestions(questions[set].hard, 1),
+  const contestWithCompletion = {
+    easy: contest.easy.map((q) => ({ ...q, completed: false })),
+    medium: contest.medium.map((q) => ({ ...q, completed: false })),
+    hard: contest.hard.map((q) => ({ ...q, completed: false })),
   };
-
+  
   res.json(contest);
 });
 
