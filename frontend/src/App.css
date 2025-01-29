@@ -208,61 +208,25 @@ h1 {
 }
 
 
-/* Insights Page Styles */
-.insight-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
 
-.insight-card.easy {
-  background-color: #dcfce7; /* Light green */
-  color: #16a34a; /* Green text */
-}
-
-.insight-card.medium {
-  background-color: #fef9c3; /* Light yellow */
-  color: #ca8a04; /* Yellow text */
-}
-
-.insight-card.hard {
-  background-color: #fee2e2; /* Light red */
-  color: #dc2626; /* Red text */
-}
-
-.insight-content {
-  flex-grow: 1;
-  margin-right: 16px;
-}
-
-.insight-actions {
+.question-insights {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
 .youtube-button {
-  background-color: #ff0000; /* YouTube red */
-  color: white;
+  background: none;
   border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 14px;
-  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.youtube-button:hover {
-  background-color: #cc0000; /* Darker red */
+.youtube-logo {
+  width: 40px;
+  height: 40px;
 }
 
-.total-time-left {
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: #1e293b; /* Dark gray */
-}
