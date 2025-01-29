@@ -120,7 +120,7 @@ function ContestPage() {
         >
           <img src={regenerateLogo} alt="Regenerate" className="regenerate-logo" />
         </button>
-        <div className="card">
+        <div className="contest-card">
           <div className="space-y-4">
             {questions.easy.map((q) => renderQuestion(q, 'easy'))}
             {questions.medium.map((q) => renderQuestion(q, 'medium'))}
