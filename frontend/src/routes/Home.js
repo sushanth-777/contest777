@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../App.css';
 
 const Home = () => {
   const [set, setSet] = useState('set_75');
-  const [selectedTime, setSelectedTime] = useState(90); // Default: 90 minutes
+  const [selectedTime, setSelectedTime] = useState(90);
   const navigate = useNavigate();
 
-  const handleGenerateContest = async () => {
+  const handleGenerateContest = () => {
     try {
-      const response = await axios.post('http://localhost:5001/api/generate-contest', { set });
-      const contestData = response.data;
-
-      // Navigate to the contest page with the generated data and timer
       navigate('/contest', {
         state: {
-          contest: contestData,
+          selectedSet: set,
           selectedTime,
         },
       });
@@ -39,7 +34,6 @@ const Home = () => {
           >
             <option value="set_75">75 Questions</option>
             <option value="set_150">150 Questions</option>
-            <option value="set_455">455 Questions</option>
           </select>
         </div>
 

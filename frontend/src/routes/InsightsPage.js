@@ -1,10 +1,11 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../App.css';
-import youtubeLogo from '../assets/youtube-logo.png'; // Import the YouTube logo
+import youtubeLogo from '../assets/youtube-logo.png';
 
 function InsightsPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { questions, timeLeft } = location.state;
 
   const formatTime = (seconds) => {
@@ -20,7 +21,7 @@ function InsightsPage() {
         <div className="question-insights">
           <span className="time-taken">{q.timeTaken ? formatTime(q.timeTaken) : 'N/A'}</span>
           <button 
-            onClick={() => window.open(q.youtubeLink, '_blank')}
+            onClick={() => q.youtubeLink && window.open(q.youtubeLink, '_blank')}
             className="youtube-button"
           >
             <img src={youtubeLogo} alt="YouTube" className="youtube-logo" />
@@ -30,10 +31,18 @@ function InsightsPage() {
     ))
   );
 
+  const handleNewContest = () => {
+    navigate('/');
+  };
+
   return (
     <div className="App">
       <div className="card-container">
-        <h1 className="text-3xl font-bold mb-6 text-green-600 text-center">Insights</h1>
+        <div className="new-contest-container">
+          <button onClick={handleNewContest} className="new-contest-button">
+            New Contest
+          </button>
+        </div>
         <div className="card">
           <div className="space-y-4">
             {renderInsights('easy')}

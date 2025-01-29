@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
+import questionsData from '../data/questions.json';
 import '../App.css';
 import regenerateLogo from '../assets/regenerate-logo.png';
 
+function generateRandomQuestions(data) {
+  const randomize = (arr, count) =>
+    [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
+
+  return {
+    easy: randomize(data.easy, 1),
+    medium: randomize(data.medium, 2),
+    hard: randomize(data.hard, 1),
+  };
+}
+
 function ContestPage() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { contest, selectedTime } = location.state;
+  const location = useLocation();
+  const { selectedSet, selectedTime } = location.state;
   const [timeLeft, setTimeLeft] = useState(selectedTime * 60);
-  const [questions, setQuestions] = useState({
-    easy: contest.easy.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
-    medium: contest.medium.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
-    hard: contest.hard.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
-  });
+  const [questions, setQuestions] = useState(() =>
+    generateRandomQuestions(questionsData[selectedSet])
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -30,6 +39,7 @@ function ContestPage() {
   }, []);
 
   const formatTime = (seconds) => {
+    if (seconds === null || seconds === undefined) return '00:00';
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
@@ -40,7 +50,13 @@ function ContestPage() {
       ...prevQuestions,
       [difficulty]: prevQuestions[difficulty].map((q) =>
         q.id === id
-          ? { ...q, startTime: q.startTime === null ? selectedTime * 60 - timeLeft : q.startTime }
+          ? {
+              ...q,
+              startTime:
+                q.startTime !== undefined && q.startTime !== null
+                  ? q.startTime
+                  : selectedTime * 60 - timeLeft,
+            }
           : q
       ),
     }));
@@ -49,16 +65,29 @@ function ContestPage() {
   const handleCheckboxChange = (difficulty, id) => {
     setQuestions((prevQuestions) => ({
       ...prevQuestions,
-      [difficulty]: prevQuestions[difficulty].map((q) =>
-        q.id === id
-          ? {
+      [difficulty]: prevQuestions[difficulty].map((q) => {
+        if (q.id === id) {
+          if (!q.completed) {
+            const timeTaken =
+              q.startTime !== null
+                ? selectedTime * 60 - timeLeft - q.startTime
+                : null;
+            return {
               ...q,
-              completed: !q.completed,
-              timeTaken: q.completed ? null : (selectedTime * 60 - timeLeft) - q.startTime,
-              startTime: q.completed ? null : q.startTime,
-            }
-          : q
-      ),
+              completed: true,
+              timeTaken: timeTaken,
+            };
+          } else {
+            return {
+              ...q,
+              completed: false,
+              timeTaken: null,
+              startTime: null,
+            };
+          }
+        }
+        return q;
+      }),
     }));
   };
 
@@ -66,19 +95,9 @@ function ContestPage() {
     navigate('/insights', { state: { questions, selectedTime, timeLeft } });
   };
 
-  const handleRegenerate = async () => {
-    try {
-      const response = await axios.post('http://localhost:5001/api/generate-contest', { set: "set_75" });
-      const newContest = response.data;
-      setQuestions({
-        easy: newContest.easy.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
-        medium: newContest.medium.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
-        hard: newContest.hard.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
-      });
-      setTimeLeft(selectedTime * 60);
-    } catch (error) {
-      console.error('Error regenerating contest:', error);
-    }
+  const handleRegenerate = () => {
+    setQuestions(generateRandomQuestions(questionsData[selectedSet]));
+    setTimeLeft(selectedTime * 60);
   };
 
   const renderQuestion = (q, difficulty) => (
@@ -113,11 +132,10 @@ function ContestPage() {
   return (
     <div className="App">
       <div className="card-container">
-        <h1 className="text-3xl font-bold mb-6 text-green-600 text-center">Contest Questions</h1>
-        <button
-          onClick={handleRegenerate}
-          className="regenerate-button"
-        >
+        <h1 className="text-3xl font-bold mb-6 text-green-600 text-center">
+          Contest Questions
+        </h1>
+        <button onClick={handleRegenerate} className="regenerate-button">
           <img src={regenerateLogo} alt="Regenerate" className="regenerate-logo" />
         </button>
         <div className="contest-card">
@@ -127,14 +145,9 @@ function ContestPage() {
             {questions.hard.map((q) => renderQuestion(q, 'hard'))}
           </div>
           <div className="mt-6">
-            <h3 className="timer">
-              Time Left: {formatTime(timeLeft)}
-            </h3>
+            <h3 className="timer">Time Left: {formatTime(timeLeft)}</h3>
           </div>
-          <button
-            onClick={handleSubmit}
-            className="submit-button mt-4"
-          >
+          <button onClick={handleSubmit} className="submit-button mt-4">
             Submit
           </button>
         </div>
