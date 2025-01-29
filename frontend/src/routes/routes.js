@@ -3,7 +3,6 @@ import ContestPage from './ContestPage';
 import InsightsPage from './InsightsPage';
 import '../App.css';
 
-
 const routes = [
   { path: '/', component: HomePage },
   { path: '/contest', component: ContestPage },

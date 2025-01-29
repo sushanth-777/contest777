@@ -1,7 +1,7 @@
 {
     "set_75": {
       "easy": [
-        { "id": 1, "title": "Contains Duplicate", "link": "https://leetcode.com/problems/contains-duplicate/" },
+        { "id": 1, "title": "Contains Duplicate", "link": "https://leetcode.com/problems/contains-duplicate/", "youtubeLink": "https://youtube.com/example1" },
         { "id": 2, "title": "Valid Anagram", "link": "https://leetcode.com/problems/valid-anagram/" },
         { "id": 3, "title": "Two Sum", "link": "https://leetcode.com/problems/two-sum/" },
         { "id": 4, "title": "Valid Palindrome", "link": "https://leetcode.com/problems/valid-palindrome/" },
@@ -74,13 +74,13 @@
         
       ],
       "hard": [
-        { "id": 69, "title": "Maximum Window Substring", "link": "https://leetcode.com/problems/minimum-window-substring/" },
-        { "id": 70, "title": "Merge K Sorted Lists", "link": "https://leetcode.com/problems/merge-k-sorted-lists/" },
-        { "id": 71, "title": "Binary Tree Maximum Path Sum", "link": "https://leetcode.com/problems/binary-tree-maximum-path-sum/" },
-        { "id": 72, "title": "Serialize and Deserialize Binary Tree", "link": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/" },
-        { "id": 73, "title": "Find Median From Data Stream", "link": "https://leetcode.com/problems/find-median-from-data-stream/" },
-        { "id": 74, "title": "Word Search II", "link": "https://leetcode.com/problems/word-search-ii/" },
-        { "id": 75, "title": "Alien Dictionary", "link": "https://leetcode.com/problems/alien-dictionary/" }
+        { "id": 69, "title": "Maximum Window Substring", "link": "https://leetcode.com/problems/minimum-window-substring/", "youtubeLink": "https://www.youtube.com/" },
+        { "id": 70, "title": "Merge K Sorted Lists", "link": "https://leetcode.com/problems/merge-k-sorted-lists/", "youtubeLink": "https://youtube.com/" },
+        { "id": 71, "title": "Binary Tree Maximum Path Sum", "link": "https://leetcode.com/problems/binary-tree-maximum-path-sum/", "youtubeLink": "https://youtube.com/" },
+        { "id": 72, "title": "Serialize and Deserialize Binary Tree", "link": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/", "youtubeLink": "https://youtube.com/" },
+        { "id": 73, "title": "Find Median From Data Stream", "link": "https://leetcode.com/problems/find-median-from-data-stream/", "youtubeLink": "https://youtube.com/" },
+        { "id": 74, "title": "Word Search II", "link": "https://leetcode.com/problems/word-search-ii/", "youtubeLink": "https://youtube.com/" },
+        { "id": 75, "title": "Alien Dictionary", "link": "https://leetcode.com/problems/alien-dictionary/", "youtubeLink": "https://youtube.com/" }
       ]
     },
     "set_150": {
