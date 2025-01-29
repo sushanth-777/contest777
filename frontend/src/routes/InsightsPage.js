@@ -20,7 +20,7 @@ function InsightsPage() {
         <div className="question-insights">
           <span className="time-taken">{q.timeTaken ? formatTime(q.timeTaken) : 'N/A'}</span>
           <button 
-            onClick={() => window.open(q.youtubeLink, '_blank')}
+            onClick={() => q.youtubeLink && window.open(q.youtubeLink, '_blank')} // Ensure youtubeLink exists
             className="youtube-button"
           >
             <img src={youtubeLogo} alt="YouTube" className="youtube-logo" />
