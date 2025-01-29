@@ -6,12 +6,27 @@ function InsightsPage() {
   const location = useLocation();
   const { questions, timeLeft } = location.state;
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
   const renderInsights = (difficulty) => (
     questions[difficulty].map((q) => (
-      <div key={q.id} className="insight-card">
-        <p>{q.title}</p>
-        <p>Completed: {q.completed ? 'Yes' : 'No'}</p>
-        <p>Time Taken: {q.timeTaken ? `${q.timeTaken}s` : 'N/A'}</p>
+      <div key={q.id} className={`insight-card ${difficulty}`}>
+        <div className="insight-content">
+          <p className="question-title">{q.title}</p>
+          <p className="time-taken">Time Taken: {q.timeTaken ? formatTime(q.timeTaken) : 'N/A'}</p>
+        </div>
+        <div className="insight-actions">
+          <button
+            onClick={() => window.open(q.youtubeLink, '_blank')}
+            className="youtube-button"
+          >
+            YouTube
+          </button>
+        </div>
       </div>
     ))
   );
@@ -27,8 +42,8 @@ function InsightsPage() {
         <h2>Hard Questions</h2>
         {renderInsights('hard')}
       </div>
-      <div>
-        <p>Total Time Left: {`${Math.floor(timeLeft / 60)}:${timeLeft % 60}`}</p>
+      <div className="mt-6">
+        <p className="total-time-left">Total Time Left: {formatTime(timeLeft)}</p>
       </div>
     </div>
   );
