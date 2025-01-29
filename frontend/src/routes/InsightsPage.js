@@ -4,7 +4,7 @@ import '../App.css';
 
 function InsightsPage() {
   const location = useLocation();
-  const { questions, selectedTime, timeLeft } = location.state;
+  const { questions, timeLeft } = location.state;
 
   const renderInsights = (difficulty) => (
     questions[difficulty].map((q) => (
