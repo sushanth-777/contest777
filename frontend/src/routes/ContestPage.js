@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../App.css';
+import regenerateLogo from '../assets/regenerate-logo.png';
 
 function ContestPage() {
   const location = useLocation();
@@ -64,6 +66,21 @@ function ContestPage() {
     navigate('/insights', { state: { questions, selectedTime, timeLeft } });
   };
 
+  const handleRegenerate = async () => {
+    try {
+      const response = await axios.post('http://localhost:5001/api/generate-contest', { set: "set_75" });
+      const newContest = response.data;
+      setQuestions({
+        easy: newContest.easy.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
+        medium: newContest.medium.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
+        hard: newContest.hard.map((q) => ({ ...q, completed: false, timeTaken: null, startTime: null })),
+      });
+      setTimeLeft(selectedTime * 60);
+    } catch (error) {
+      console.error('Error regenerating contest:', error);
+    }
+  };
+
   const renderQuestion = (q, difficulty) => (
     <div
       key={q.id}
@@ -95,27 +112,32 @@ function ContestPage() {
 
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold mb-6 text-green-600">Contest Questions</h1>
-
-      <div className="card">
-        <div className="space-y-4">
-          {questions.easy.map((q) => renderQuestion(q, 'easy'))}
-          {questions.medium.map((q) => renderQuestion(q, 'medium'))}
-          {questions.hard.map((q) => renderQuestion(q, 'hard'))}
-        </div>
-
-        <div className="mt-6">
-          <h3 className="timer">
-            Time Left: {formatTime(timeLeft)}
-          </h3>
-        </div>
-
+      <div className="card-container">
+        <h1 className="text-3xl font-bold mb-6 text-green-600 text-center">Contest Questions</h1>
         <button
-          onClick={handleSubmit}
-          className="submit-button mt-4"
+          onClick={handleRegenerate}
+          className="regenerate-button"
         >
-          Submit
+          <img src={regenerateLogo} alt="Regenerate" className="regenerate-logo" />
         </button>
+        <div className="card">
+          <div className="space-y-4">
+            {questions.easy.map((q) => renderQuestion(q, 'easy'))}
+            {questions.medium.map((q) => renderQuestion(q, 'medium'))}
+            {questions.hard.map((q) => renderQuestion(q, 'hard'))}
+          </div>
+          <div className="mt-6">
+            <h3 className="timer">
+              Time Left: {formatTime(timeLeft)}
+            </h3>
+          </div>
+          <button
+            onClick={handleSubmit}
+            className="submit-button mt-4"
+          >
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   );
