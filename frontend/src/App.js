@@ -7,7 +7,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router basename="/contest_777">
+    <Router basename="/contest777">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contest" element={<ContestPage />} />
