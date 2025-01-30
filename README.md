@@ -2,9 +2,7 @@
 
 A tool to help you practice coding interview questions in a timed environment. Generate contests from curated problem lists (like Striver's 75 and 150 sheets), solve them under time pressure, and access tutorial videos afterward.
 
-![Contest Generator Screenshot](frontend/public/images/screenshot1.png)
-![Contest Generator Screenshot](frontend/public/images/screenshot2.png) <!
-![Contest Generator Screenshot](frontend/public/images/screenshot3.png) <!<!-- Add a screenshot here -->
+
 
 ---
 
