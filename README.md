@@ -48,4 +48,4 @@ Follow these steps to run the project locally:
 4. Review Tutorials: After the contest, access YouTube tutorials for each problem.
 
 ## Deployment
-This project is deployed using Vercel. Visit the live app at https://contest-generator.vercel.app.
+This project is deployed using Vercel. Visit the live app at https://contest777.vercel.app.
